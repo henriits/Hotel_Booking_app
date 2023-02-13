@@ -1,0 +1,16 @@
+class User:
+    pass
+
+
+class Hotel:
+    def book(self):
+        pass
+
+
+class ReservationTicket:
+    def generate(self):
+        pass
+
+
+class CreditCard:
+    pass
