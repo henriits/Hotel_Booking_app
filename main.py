@@ -6,6 +6,7 @@ df_cards = pandas.read_csv("cards.csv", dtype=str).to_dict(orient="records")  # 
 
 df_cards_security = pandas.read_csv("card_security.csv", dtype=str)
 
+
 class User:
     pass
 
@@ -45,6 +46,18 @@ class ReservationTicket:
         return contest
 
 
+class SpaReservationTicket(ReservationTicket):
+    def generate(self):
+        contest = f"""
+        Thank you for your SPA reservation!
+        Here are your SPA booking data:
+        Name: {self.customer_name}
+        Hotel name: {self.hotel.name}
+
+        """
+        return contest
+
+
 class CreditCard:
     def __init__(self, number):
         self.number = number
@@ -60,15 +73,13 @@ class CreditCard:
             return False
 
 
-class SecureCreditCard(CreditCard):    # inheriting all data from creditcard
+class SecureCreditCard(CreditCard):  # inheriting all data from creditcard
     def authenticate(self, given_password):
         password = df_cards_security.loc[df_cards_security["number"] == self.number, "password"].squeeze()
         if password == given_password:
             return True
         else:
             return False
-
-
 
 
 # Main loop
@@ -85,8 +96,17 @@ if hotel.available():
 
             hotel.book()
             name = input("Enter your name: ")
-            reservation_ticket = ReservationTicket(customer_name=name, hotel_object=hotel)
+            reservation_ticket = ReservationTicket(customer_name=name,
+                                                   hotel_object=hotel)
             print(reservation_ticket.generate())
+            spa_package = input("Do you want to book a spa package? ")
+
+            if spa_package == "yes":
+                spa_reservation_ticket = SpaReservationTicket(customer_name=name,
+                                                              hotel_object=hotel)
+                print(spa_reservation_ticket.generate())
+            else:
+                print("Thank you for purchase!")
         else:
             print("Credit card authentication failed.")
     else:
