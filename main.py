@@ -13,7 +13,9 @@ class Hotel:
         pass
 
     def book(self):
-        pass
+        """Book a hotel by changing its availability to no"""
+        df.loc[df["id"] == self.hotel_id, "available"] = "no"
+        df.to_csv("hotels.csv", index=False)
 
     def available(self):
         """ Check if hotel is available"""
@@ -22,8 +24,6 @@ class Hotel:
             return True
         else:
             return False
-
-
 
 
 class ReservationTicket:
